@@ -19,42 +19,44 @@ int main ()
     {
         opcmenu = menu();
         
-        if (opcmenu == 1)
+        if (opcmenu == 1) // CADASTRO DE NOVOS VEICULOS;
         {
             Veiculo novoVeiculo = CadastrarNovoVeiculo();
             veiculos.push_back(novoVeiculo);
             continue;
         }
         
-        else if (opcmenu == 2)
+        else if (opcmenu == 2) // REMOCAO DE VEICULOS;
         {
-            
-        }
-        
-        else if (opcmenu == 3)
-        {
-            
-        }
-        
-        else if (opcmenu == 4)
-        {
-            
-        }
-        
-        else if (opcmenu == 5)
-        {
-            
-        }
-        
-        else if (opcmenu == 6)
-        {
-            RelatorioGeral(veiculos);
+            RemoverVeiculo(veiculos);
             continue;
         }
         
-        else if (opcmenu == 7)
+        else if (opcmenu == 3) // CADASTRA ROTA;
         {
             
+        }
+        
+        else if (opcmenu == 4) // REMOCAO DE ROTA DE UM VEICULO;
+        {
+            
+        }
+        
+        else if (opcmenu == 5) // RELATORIO POR VEICULO;
+        {
+            
+        }
+        
+        else if (opcmenu == 6) // RELATORIO GERAL;
+        {
+            RelatorioGeralVeiculos(veiculos);
+            continue;
+        }
+        
+        else if (opcmenu == 7) // PESQUISAR;
+        {
+            BuscarVeiculo(veiculos);
+            continue;
         }
         
         else if (opcmenu == 0)
@@ -91,7 +93,7 @@ int menu()
     return opc;
 }
 
-Veiculo CadastrarNovoVeiculo()
+Veiculo CadastrarNovoVeiculo() //CADASTRA UM NOVO VEICULO AO BANCO DE DADOS;
 {
     string fc_modelo;
     string fc_marca;
@@ -118,7 +120,82 @@ Veiculo CadastrarNovoVeiculo()
     return novoVeiculo;
 }
 
-void RelatorioGeral(const vector<Veiculo> &veiculos)
+void RemoverVeiculo(vector<Veiculo> &veiculos)
+{
+    bool encontrou;
+    string dt_placa; // DELET PLACA;
+    
+    if (veiculos.empty())
+    {
+        cout << "Nao existem veiculos cadastrados" << endl;
+        return;
+    }
+    
+    else
+    {
+        RelatorioGeralVeiculos(veiculos);
+        cout << "Confirme a placa do veiculo para exclusao: ";
+        cin.ignore();
+        getline(cin, dt_placa);
+        
+        encontrou = false;
+        for (auto it = veiculos.begin(); it != veiculos.end();)
+        {
+            if(it -> GetPlaca() == dt_placa)
+            {
+                it = veiculos.erase(it);
+                encontrou = true;
+                cout << "Veiculo removido" << endl;
+            }
+            
+            else
+            {
+                it++;
+            }
+        }
+        
+        if (!encontrou)
+        {
+            cout << "Vriculo nao encontado no banco de dados" << endl;
+        }
+        
+    }
+}
+
+void BuscarVeiculo(const vector<Veiculo> &veiculos)
+{
+    int i;
+    string busca;
+    
+    if (veiculos.empty())
+    {
+        cout << "Nao existem veiculos cadastrados" << endl;
+        return;
+    }
+    
+    else
+    {
+        cout << "Digite a placa, modelo ou marca para consulta: " ;
+        cin.ignore();
+        getline(cin, busca);
+        cout << endl;
+        
+        for (i = 0; i < veiculos.size(); i ++)
+        {
+            if(veiculos[i].GetInfo().find(busca) <= veiculos[i].GetInfo().size())
+            {
+                cout << veiculos[i].GetInfo() << endl;
+            }
+            else
+            {
+                cout << "Veiculo nao encontrado no banco de dados.";
+                return;
+            }
+        }
+    }
+}
+
+void RelatorioGeralVeiculos(const vector<Veiculo> &veiculos) // MOSTRA TODAS AS INFORMACOES DE TODOS OS VEICULOS;
 {
     int i;
     

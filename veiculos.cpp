@@ -7,7 +7,7 @@
 
 #include "veiculos.hpp"
 
-Veiculo::Veiculo(string placa, string modelo, string marca,  string Kminicial)
+Veiculo::Veiculo(string modelo, string marca, string placa, string Kminicial)
 {
     m_modelo = modelo;
     m_marca = marca;
@@ -30,4 +30,9 @@ string Veiculo::GetInfo() const
     stt << "Quilometragem total: " << m_Kminicial << endl;
     
     return stt.str();
+}
+
+string Veiculo::GetPlaca()
+{
+    return m_placa;
 }

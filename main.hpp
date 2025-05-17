@@ -13,8 +13,12 @@
 int main();
 int menu();
 
-void RelatorioGeral(const vector<Veiculo> &veiculos);
+void BuscarVeiculo(const vector<Veiculo> &veiculos);
+//void BuscarRota();
 
-Veiculo CadastrarNovoVeiculo();
+void RemoverVeiculo(vector<Veiculo> &veiculos);
+void RelatorioGeralVeiculos(const vector<Veiculo> &veiculos); // MOSTRA TODAS AS INFORMACOES DE TODOS OS VEICULOS;
+
+Veiculo CadastrarNovoVeiculo(); //CADASTRA UM NOVO VEICULO AO BANCO DE DADOS;
 
 #endif

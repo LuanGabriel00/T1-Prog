@@ -24,6 +24,7 @@ public:
     bool RemoveViagem(size_t index);
     
     string GetInfo() const;
+    string GetPlaca();
     string BuscaViagemPorString(string palavraPBuscar);
     string GetTodasAsVigens();
     
