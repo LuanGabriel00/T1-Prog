@@ -11,7 +11,6 @@ int main ()
 {
     
     vector<Veiculo> veiculos;
-    vector<Rota> rotas;
     
     int opcmenu;
     
@@ -34,29 +33,31 @@ int main ()
         
         else if (opcmenu == 3) // CADASTRA ROTA;
         {
-            
+            AdicionarRotaAVeiculo(veiculos);
+            continue;
         }
         
         else if (opcmenu == 4) // REMOCAO DE ROTA DE UM VEICULO;
         {
-            
+            RemoverRotaDeVeiculo(veiculos);
+            continue;
         }
         
         else if (opcmenu == 5) // RELATORIO POR VEICULO;
         {
-            
+            RelatorioPorVeiculo(veiculos);
+            continue;
         }
         
         else if (opcmenu == 6) // RELATORIO GERAL;
         {
-            RelatorioGeralVeiculos(veiculos);
+            RelatorioGeral(veiculos);
             continue;
         }
         
         else if (opcmenu == 7) // PESQUISAR;
         {
-            BuscarVeiculo(veiculos);
-            continue;
+            
         }
         
         else if (opcmenu == 0)
@@ -98,7 +99,7 @@ Veiculo CadastrarNovoVeiculo() //CADASTRA UM NOVO VEICULO AO BANCO DE DADOS;
     string fc_modelo;
     string fc_marca;
     string fc_placa;
-    string fc_kminicial;
+    float fc_kminicial;
     
     cin.ignore();
     
@@ -114,7 +115,7 @@ Veiculo CadastrarNovoVeiculo() //CADASTRA UM NOVO VEICULO AO BANCO DE DADOS;
     getline(cin, fc_placa);
     
     cout << "Insira a quilometragem inicial: ";
-    getline(cin, fc_kminicial);
+    cin >> fc_kminicial;
     
     Veiculo novoVeiculo(fc_modelo, fc_marca, fc_placa, fc_kminicial);
     return novoVeiculo;
@@ -133,7 +134,7 @@ void RemoverVeiculo(vector<Veiculo> &veiculos)
     
     else
     {
-        RelatorioGeralVeiculos(veiculos);
+        RelatorioPorVeiculo(veiculos);
         cout << "Confirme a placa do veiculo para exclusao: ";
         cin.ignore();
         getline(cin, dt_placa);
@@ -162,7 +163,7 @@ void RemoverVeiculo(vector<Veiculo> &veiculos)
     }
 }
 
-void BuscarVeiculo(const vector<Veiculo> &veiculos)
+void RelatorioPorVeiculo(const vector<Veiculo> &veiculos)
 {
     int i;
     string busca;
@@ -195,13 +196,121 @@ void BuscarVeiculo(const vector<Veiculo> &veiculos)
     }
 }
 
-void RelatorioGeralVeiculos(const vector<Veiculo> &veiculos) // MOSTRA TODAS AS INFORMACOES DE TODOS OS VEICULOS;
+void RelatorioGeral(const vector<Veiculo> &veiculos) // MOSTRA TODAS AS INFORMACOES DE TODOS OS VEICULOS;
 {
     int i;
     
     for (i = 0; i < veiculos.size(); i ++)
     {
         cout << veiculos[i].GetInfo() << endl;
+        cout << veiculos[i].GetTodasAsVigens();
     }
 }
+
+void AdicionarRotaAVeiculo(vector<Veiculo> &veiculos)
+{
+
+    string origem, destino;
+    float distancia;
+    size_t id;
+    size_t i;
+    
+    if (veiculos.empty())
+    {
+        cout << "Nenhum veículo cadastrado!\n";
+        return;
+    }
+    
+    else
+    {
+        for (i = 0; i < veiculos.size(); i++)
+        {
+            cout << "ID " << i << ": " << endl;
+            cout << veiculos[i].GetInfo() << endl;
+        }
+        cout << "Selecione o veículo (ID):" << endl;
+    }
+    
+    cin >> id;
+    cin.ignore();
+    
+    if (id >= veiculos.size())
+    {
+        cout << "ID inválido!" << endl;
+        return;
+    }
+    
+    cout << "Origem: ";
+    getline(cin, origem);
+    
+    cout << "Destino: ";
+    getline(cin, destino);
+    
+    cout << "Distância (km): ";
+    cin >> distancia;
+    cin.ignore();
+    
+    veiculos[id].IncluirViagem(origem, destino, distancia);
+    cout << "Rota adicionada!";
+}
+
+void RemoverRotaDeVeiculo(vector<Veiculo> &veiculos)
+{
+    size_t idVeiculo;
+    size_t idRota;
+    size_t i;
+    
+    if (veiculos.empty())
+    {
+        cout << "Nenhum veículo cadastrado!" << endl;
+        return;
+    }
+
+    else
+    {
+        for (i = 0; i < veiculos.size(); i++)
+        {
+            cout << "ID " << i << ": " << endl;
+            cout << veiculos[i].GetInfo() << endl;
+        }
+        cout << "Selecione o veículo (ID):" << endl;
+    }
+    
+    cin >> idVeiculo;
+    cin.ignore();
+
+    if (idVeiculo >= veiculos.size())
+    {
+        cout << "ID de veículo inválido!" << endl;
+        return;
+    }
+
+    Veiculo &veiculo = veiculos[idVeiculo];
+    
+    cout << veiculo.GetTodasAsVigens();
+
+    if (veiculo.GetTodasAsVigens() != "Nenhuma viagem cadastrada para este veículo.")
+    {
+        cout << "Digite o ID da rota a ser removida: ";
+        
+        cin >> idRota;
+        cin.ignore();
+        
+        if (veiculo.RemoveViagem(idRota))
+        {
+            cout << "Rota removida com sucesso!" << endl;
+        }
+        
+        else
+        {
+            cout << "ID de rota inválido!" << endl;
+        }
+    }
+    else
+        
+    {
+        return;
+    }
+}
+
 

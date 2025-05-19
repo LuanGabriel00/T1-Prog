@@ -26,9 +26,10 @@ public:
     Rota(string ori, string dest, float distKm);
     ~Rota();
     
-    string GetOrigin();
-    string GetDest();
-    float GetDistKm();
+    string GetInfo() const;
+    string GetOrigin() const;
+    string GetDest() const;
+    float GetDistKm() const;
 };
 
 #endif
